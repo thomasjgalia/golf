@@ -38,7 +38,7 @@ export default function PublicScoringPage() {
           <div className="font-medium">{event.eventname}</div>
           <div className="text-sm text-muted-foreground">{event.coursename} • {event.eventdate}</div>
           <div className="mt-2">
-            <Button onClick={() => nav(/events//scoring)}>Open Scoring</Button>
+            <Button onClick={() => nav(`/scoring?code=${event.sharecode}`)}>Open Scoring</Button>
           </div>
         </div>
       )}

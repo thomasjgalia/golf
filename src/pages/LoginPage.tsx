@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [cooldown, setCooldown] = useState(0)
+  const [password, setPassword] = useState('')
   const nav = useNavigate()
   const location = useLocation() as any
   const from = location.state?.from?.pathname || '/events'

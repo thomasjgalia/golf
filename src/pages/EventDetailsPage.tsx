@@ -24,19 +24,21 @@ export default function EventDetailsPage() {
   if (!form) return <div>Event not found</div>
 
   async function save() {
+    const formEl = form
+    if (!formEl) return
     const { data, error } = await supabase
       .from('events')
       .update({
-        eventname: form.eventname,
-        eventdate: form.eventdate,
-        coursename: form.coursename,
-        tees: form.tees,
-        format: form.format,
-        numberofholes: form.numberofholes,
-        parperhole: form.parperhole,
-        islocked: form.islocked,
-        sharecode: form.sharecode,
-        status: form.status,
+        eventname: formEl.eventname,
+        eventdate: formEl.eventdate,
+        coursename: formEl.coursename,
+        tees: formEl.tees,
+        format: formEl.format,
+        numberofholes: formEl.numberofholes,
+        parperhole: formEl.parperhole,
+        islocked: formEl.islocked,
+        sharecode: formEl.sharecode,
+        status: formEl.status,
       })
       .eq('eventid', id)
       .select('*')

@@ -79,11 +79,11 @@ export default function LeaderboardPage() {
       const hcp = ids.map((id) => players[id]?.handicap ?? 0).sort((a, b) => a - b)
       const n = hcp.length
       if (n === 0) return 0
-      if (n === 1) return +(0.75 * hcp[0]).toFixed(1)
-      if (n === 2) return +((0.35 * hcp[0]) + (0.15 * hcp[1])).toFixed(1)
-      if (n === 3) return +((0.25 * hcp[0]) + (0.15 * hcp[1]) + (0.10 * hcp[2])).toFixed(1)
+      if (n === 1) return +(0.75 * (hcp[0] ?? 0)).toFixed(1)
+      if (n === 2) return +((0.35 * (hcp[0] ?? 0)) + (0.15 * (hcp[1] ?? 0))).toFixed(1)
+      if (n === 3) return +((0.25 * (hcp[0] ?? 0)) + (0.15 * (hcp[1] ?? 0)) + (0.10 * (hcp[2] ?? 0))).toFixed(1)
       // 4 or more
-      return +((0.20 * hcp[0]) + (0.15 * hcp[1]) + (0.10 * hcp[2]) + (0.05 * hcp[3])).toFixed(1)
+      return +((0.20 * (hcp[0] ?? 0)) + (0.15 * (hcp[1] ?? 0)) + (0.10 * (hcp[2] ?? 0)) + (0.05 * (hcp[3] ?? 0))).toFixed(1)
     }
 
     return teams.map((team) => {
@@ -91,7 +91,7 @@ export default function LeaderboardPage() {
       const byHole: Record<number, number> = {}
       for (let hole = 1; hole <= holes; hole++) {
         const s = scores.find((s) => s.teamid === team.teamid && s.holenumber === hole && s.strokes != null)
-        if (s?.strokes != null) byHole[hole] = s.strokes
+        if (s && s.strokes != null) byHole[hole] = s.strokes
       }
       const frontIdx = [...Array(Math.min(9, holes)).keys()].map((i) => i + 1)
       const backIdx = holes === 18 ? [...Array(9).keys()].map((i) => i + 10) : []
