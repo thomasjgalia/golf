@@ -158,35 +158,33 @@ export default function ScoringPage() {
 
       {team && (
         <>
-          <div className="border sticky top-20 z-20 bg-white rounded p-4 pb-24 space-y-3">
+          <div className="border sticky top-20 z-20 bg-white rounded p-3 space-y-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="text-lg font-medium">Hole {currentHole} • Par {par[currentHole - 1] ?? 4}</div>
               <div className="text-sm">
-                <span className="mr-3">Front: {frontStrokes}/{frontPar} ({frontToPar > 0 ? `+${frontToPar}` : frontToPar})</span>
-                {backIdx.length > 0 && <span className="mr-3">Back: {backStrokes}/{backPar} ({backToPar > 0 ? `+${backToPar}` : backToPar})</span>}
                 <span>Total: {totalStrokes}/{totalPar} ({totalToPar > 0 ? `+${totalToPar}` : totalToPar})</span>
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button variant={strokes === ((par[currentHole - 1] ?? 4) - 2) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) - 2)}>-2</Button>
-              <Button variant={strokes === ((par[currentHole - 1] ?? 4) - 1) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) - 1)}>-1</Button>
-              <Button variant={strokes === (par[currentHole - 1] ?? 4) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4))}>Par</Button>
-              <Button variant={strokes === ((par[currentHole - 1] ?? 4) + 1) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) + 1)}>+1</Button>
-              <Button variant={strokes === ((par[currentHole - 1] ?? 4) + 2) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) + 2)}>+2</Button>
+            <div className="flex flex-wrap gap-1">
+              <Button size="sm" className="px-2" variant={strokes === ((par[currentHole - 1] ?? 4) - 2) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) - 2)}>-2</Button>
+              <Button size="sm" className="px-2" variant={strokes === ((par[currentHole - 1] ?? 4) - 1) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) - 1)}>-1</Button>
+              <Button size="sm" className="px-2" variant={strokes === (par[currentHole - 1] ?? 4) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4))}>Par</Button>
+              <Button size="sm" className="px-2" variant={strokes === ((par[currentHole - 1] ?? 4) + 1) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) + 1)}>+1</Button>
+              <Button size="sm" className="px-2" variant={strokes === ((par[currentHole - 1] ?? 4) + 2) ? 'default' : 'secondary'} onClick={() => handleQuickSave((par[currentHole - 1] ?? 4) + 2)}>+2</Button>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => handleQuickSave((strokes ?? (par[currentHole - 1] ?? 4)) - 1)}>-</Button>
+            <div className="flex items-center gap-1">
+              <Button size="sm" variant="outline" onClick={() => handleQuickSave((strokes ?? (par[currentHole - 1] ?? 4)) - 1)}>-</Button>
               <Input
                 type="number"
-                className="w-24 text-center"
+                className="w-16 h-8 text-center"
                 value={strokes ?? ''}
                 onChange={(e) => setStrokes(e.target.value ? Number(e.target.value) : null)}
                 onBlur={() => { if (strokes != null) handleQuickSave(strokes) }}
                 onKeyDown={(e) => { if (e.key === 'Enter' && strokes != null) handleQuickSave(strokes) }}
               />
-              <Button variant="outline" onClick={() => handleQuickSave((strokes ?? (par[currentHole - 1] ?? 4)) + 1)}>+</Button>
+              <Button size="sm" variant="outline" onClick={() => handleQuickSave((strokes ?? (par[currentHole - 1] ?? 4)) + 1)}>+</Button>
             </div>
-            <div className="h-16" />
+
             <div className="fixed bottom-0 left-0 right-0 border-t bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/75">
               <div className="container py-2 grid grid-cols-4 gap-2">
                 <Button variant="ghost" disabled={holes === 0} onClick={() => handleSelectHole(Math.max(1, currentHole - 1))}>Prev</Button>
@@ -199,7 +197,10 @@ export default function ScoringPage() {
 
           <div className="space-y-3">
           <div>
-            <div className="text-sm font-medium mb-1">Front 9</div>
+            <div className="flex items-baseline justify-between mb-1">
+              <div className="text-sm font-medium">Front 9</div>
+              <div className="text-xs text-muted-foreground">Front: {frontStrokes}/{frontPar} ({frontToPar > 0 ? `+${frontToPar}` : frontToPar})</div>
+            </div>
             <div className="grid grid-cols-3 sm:grid-cols-9 gap-2">
               {frontIdx.map((h) => {
                 const s = scores?.find((s) => s.holenumber === h && s.teamid === team.teamid)
@@ -230,7 +231,10 @@ export default function ScoringPage() {
 
           {backIdx.length > 0 && (
             <div>
-              <div className="text-sm font-medium mb-1">Back 9</div>
+                              <div className="flex items-baseline justify-between mb-1">
+                  <div className="text-sm font-medium">Back 9</div>
+                  <div className="text-xs text-muted-foreground">Back: {backStrokes}/{backPar} ({backToPar > 0 ? `+${backToPar}` : backToPar})</div>
+                </div>
               <div className="grid grid-cols-3 sm:grid-cols-9 gap-2">
                                 {backIdx.map((h) => {
                 const s = scores?.find((s) => s.holenumber === h && s.teamid === team.teamid)

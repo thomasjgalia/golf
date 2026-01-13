@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams, Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'
 import type { EventRow, ScoreRow, TeamRow, PlayerRow } from '@/types'
 import { initials } from '@/types'
@@ -147,6 +147,7 @@ export default function LeaderboardPage() {
               <th className="p-2">HCP</th>
               <th className="p-2">Holes</th>
               <th className="p-2">Strokes</th>
+              <th className="p-2">Scoring</th>
             </tr>
           </thead>
           <tbody>
@@ -161,6 +162,11 @@ export default function LeaderboardPage() {
                   <td className="p-2">{r.teamHcp?.toFixed?.(1) ?? r.teamHcp}</td>
                   <td className="p-2">{r.holesCompleted}/{event?.numberofholes}</td>
                   <td className="p-2">{r.totalStrokes}</td>
+                  <td className="p-2">
+                    <Button size="sm" asChild>
+                      <Link to={`/events/${eventId}/scoring?teamId=${r.team.teamid}`}>Score</Link>
+                    </Button>
+                  </td>
                 </tr>
               )
             })}
@@ -177,9 +183,14 @@ export default function LeaderboardPage() {
           const shown = mode === 'net' ? r.netToPar : r.scoreToPar
           return (
             <div key={r.team.teamid} className="border rounded p-3">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center gap-2">
                 <div className="font-medium">#{i + 1} {r.team.teamname}</div>
-                <div className={`font-semibold ${colorForScore(shown)}`}>{shown > 0 ? `+${shown}` : shown}</div>
+                <div className="flex items-center gap-2">
+                  <div className={`font-semibold ${colorForScore(shown)}`}>{shown > 0 ? `+${shown}` : shown}</div>
+                  <Button size="sm" variant="default" asChild>
+                    <Link to={`/events/${eventId}/scoring?teamId=${r.team.teamid}`}>Score</Link>
+                  </Button>
+                </div>
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 Players: {teamMembersInitials(r.team)}

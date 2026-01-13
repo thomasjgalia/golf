@@ -174,24 +174,24 @@ export default function TeamsPage() {
 
       <div className="grid gap-2">
         {teams?.map((t) => (
-          <div key={t.teamid} className="flex items-center justify-between border rounded p-3">
-            <div className="flex items-center gap-4">
-              <div className="font-medium">{t.teamname}</div>
-              <div className="text-xs text-muted-foreground">
-                Players: {Object.values(t.players).filter(Boolean).length}
+          <div key={t.teamid} className="border rounded p-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{t.teamname}</div>
+                <div className="text-xs text-muted-foreground">Players: {Object.values(t.players).filter(Boolean).length}</div>
+                <div className="text-xs text-muted-foreground break-words">
+                  {(() => {
+                    const ids = (Object.values(t.players) as Array<number | undefined>).filter(Boolean) as number[]
+                    const names = ids.map((id) => playerMap[id] ? `${playerMap[id].lastname}, ${playerMap[id].firstname}` : `#${id}`)
+                    return names.join('; ')
+                  })()}
+                </div>
+                {t.startinghole && <div className="text-xs text-muted-foreground">Start: {t.startinghole}</div>}
               </div>
-              <div className="text-xs text-muted-foreground">
-                {(() => {
-                  const ids = (Object.values(t.players) as Array<number | undefined>).filter(Boolean) as number[]
-                  const names = ids.map((id) => playerMap[id] ? `${playerMap[id].lastname}, ${playerMap[id].firstname}` : `#${id}`)
-                  return names.join('; ')
-                })()}
+              <div className="mt-2 sm:mt-0 flex gap-2 w-full sm:w-auto">
+                <Button size="sm" variant="outline" className="flex-1 sm:flex-none" onClick={() => beginEdit(t)}>Edit</Button>
+                <Button size="sm" variant="destructive" className="flex-1 sm:flex-none" onClick={() => { if (confirm('Delete this team?')) remove(t.teamid) }}>Delete</Button>
               </div>
-              {t.startinghole && <div className="text-xs text-muted-foreground">Start: {t.startinghole}</div>}
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => beginEdit(t)}>Edit</Button>
-              <Button variant="outline" onClick={() => { if (confirm('Delete this team?')) remove(t.teamid) }}>Delete</Button>
             </div>
           </div>
         ))}

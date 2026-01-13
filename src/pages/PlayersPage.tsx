@@ -99,15 +99,17 @@ export default function PlayersPage() {
 
       <div className="grid gap-2">
         {players?.map((p) => (
-          <div key={p.playerid} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border rounded p-4 active:scale-[0.995] transition">
-            <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
-              <div className="font-medium truncate">{p.lastname}, {p.firstname}</div>
-              <div className="text-xs text-muted-foreground">HC: {p.handicap ?? '-'}</div>
-              <div className="text-xs text-muted-foreground break-words sm:break-normal">{p.email ?? ''}</div>
-            </div>
-            <div className="flex gap-2 sm:shrink-0 flex-wrap">
-              <Button variant="outline" onClick={() => beginEdit(p)}>Edit</Button>
-              <Button variant="destructive" onClick={() => { if (confirm('Delete this player?')) remove(p.playerid) }}>Delete</Button>
+          <div key={p.playerid} className="border rounded p-3 active:scale-[0.995] transition">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex-1 min-w-0">
+                <div className="font-medium truncate">{p.lastname}, {p.firstname}</div>
+                <div className="text-xs text-muted-foreground break-all">{p.email ?? ''}</div>
+                <div className="text-xs text-muted-foreground">HC: {p.handicap ?? '-'}</div>
+              </div>
+              <div className="mt-2 sm:mt-0 flex gap-2 w-full sm:w-auto">
+                <Button size="sm" variant="outline" className="flex-1 sm:flex-none" onClick={() => beginEdit(p)}>Edit</Button>
+                <Button size="sm" variant="destructive" className="flex-1 sm:flex-none" onClick={() => { if (confirm('Delete this player?')) remove(p.playerid) }}>Delete</Button>
+              </div>
             </div>
           </div>
         ))}
